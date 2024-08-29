@@ -197,5 +197,52 @@ namespace TabloidMVC.Repositories
                 }
             };
         }
+        public void Edit(Post post)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Post
+                            SET 
+                                [Title] = @title, 
+                                Content = @content, 
+                                ImageLocation = @imageLocation, 
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@title", post.Title);
+                    cmd.Parameters.AddWithValue("@content", post.Content);
+                    cmd.Parameters.AddWithValue("@imageLocation", post.ImageLocation);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        //    public void DeletePost(int postId)
+        //    {
+        //        using (SqlConnection conn = Connection)
+        //        {
+        //            conn.Open();
+
+        //            using (SqlCommand cmd = conn.CreateCommand())
+        //            {
+        //                cmd.CommandText = @"
+        //                        DELETE FROM Post
+        //                        WHERE Id = @id
+        //                    ";
+
+        //                cmd.Parameters.AddWithValue("@id", postId);
+
+        //                cmd.ExecuteNonQuery();
+        //            }
+        //        }
+        //    }
+        //}
+
     }
 }
+
