@@ -17,6 +17,7 @@ namespace TabloidMVC
             builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
+            builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 
             var app = builder.Build();
 
@@ -39,6 +40,12 @@ namespace TabloidMVC
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.MapControllerRoute(
+                name: "comments",
+                pattern: "Post/Details/{postId}/Comments/{action=Index}/{id?}",
+                defaults: new { controller = "Comments"}
+                );
 
             app.Run();
         }
