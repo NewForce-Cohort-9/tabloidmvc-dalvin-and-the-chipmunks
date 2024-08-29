@@ -15,7 +15,11 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT id, name FROM Category";
+                    cmd.CommandText = @"
+                        SELECT c.Id, c.Name
+                        FROM Category c
+                        ORDER BY c.Name
+                        ";
                     var reader = cmd.ExecuteReader();
 
                     var categories = new List<Category>();
