@@ -8,6 +8,6 @@ namespace TabloidMVC.Repositories
 
         List<Category> GetAll();
          Category GetCategoryById(int id);
-
+        void AddCategory(Category entry);
     }
 }
