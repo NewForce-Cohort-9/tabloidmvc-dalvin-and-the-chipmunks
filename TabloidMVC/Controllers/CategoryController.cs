@@ -1,20 +1,36 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TabloidMVC.Models;
+using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
 {
     public class CategoryController : Controller
     {
+        private readonly ICategoryRepository _categoryRepository;
         // GET: CategoryController
-        public ActionResult Index()
+
+        public CategoryController(ICategoryRepository categoryRepository)
         {
-            return View();
+            _categoryRepository = categoryRepository;
+        }
+        public IActionResult Index()
+        {
+            List<Category> category = _categoryRepository.GetAll();
+            return View(category);
         }
 
         // GET: CategoryController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            Category category = _categoryRepository.GetCategoryById(id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
         }
 
         // GET: CategoryController/Create
