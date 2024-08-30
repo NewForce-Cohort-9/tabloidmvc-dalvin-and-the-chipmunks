@@ -1,0 +1,48 @@
+﻿@model TabloidMVC.Models.ViewModels.PostCommentsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Comments for Post: @Model?.Post?.Title</h1>
+
+
+<table>
+    <tr>
+        <th>
+             User
+        </th>
+        <th>
+            Subject
+        </th>
+        <th>
+            Content
+        </th>
+        <th>
+            Date/Time
+        </th>
+    </tr>
+    <tbody>
+            @foreach (var item in Model.Comments)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserProfile.DisplayName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subject)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreateDateTime)
+                    </td>
+                </tr>
+            }
+        </tbody>
+</table>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-controller="Post" asp-action="Details" asp-route-id="@Model.Post.Id">Back to Post</a>
+</div>

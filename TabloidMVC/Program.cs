@@ -17,6 +17,7 @@ namespace TabloidMVC
             builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
+            builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 
             var app = builder.Build();
 
