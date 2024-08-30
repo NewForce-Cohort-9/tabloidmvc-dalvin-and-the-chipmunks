@@ -13,30 +13,43 @@ namespace TabloidMVC.Controllers
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IPostRepository _postRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
 
-        public CommentsController(ICommentRepository commentRepository, IPostRepository postRepository)
+        public CommentsController(ICommentRepository commentRepository, IPostRepository postRepository, IUserProfileRepository userProfileRepository)
         {
             _commentRepository = commentRepository;
             _postRepository = postRepository;
+            _userProfileRepository = userProfileRepository;
         }
 
         // GET: CommentsController
-        public ActionResult Index(int postId)
+        public ActionResult Index()
         {
-            Post post = _postRepository.GetPublishedPostById(postId);
-            if (post == null)
-            {
-                return NotFound();
-            }
-
-            List<Comment> comments = _commentRepository.GetAllCommentsByPost(postId);
-            return View(comments);
+            return View();
         }
 
         // GET: CommentsController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            int userId = GetCurrentUserProfileId();
+            Post post = _postRepository.GetPublishedPostById(id);
+            List<Comment> comments = _commentRepository.GetAllCommentsByPost(id);
+
+            if (post == null)
+            {
+                post = _postRepository.GetUserPostById(id, userId);
+                if (post == null)
+                {
+                    return NotFound();
+                }
+            }
+
+            PostCommentsViewModel vm = new PostCommentsViewModel();
+            vm.Post = post;
+            vm.Comments = comments;
+            vm.UserId = userId;
+
+            return View(vm);
         }
 
         // GET: CommentsController/Create
@@ -100,6 +113,13 @@ namespace TabloidMVC.Controllers
             {
                 return View();
             }
+        }
+
+        //get current user profile id
+        private int GetCurrentUserProfileId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
         }
     }
 }

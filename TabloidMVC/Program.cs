@@ -41,12 +41,6 @@ namespace TabloidMVC
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            //app.MapControllerRoute(
-            //    name: "comments",
-            //    pattern: "Post/Details/{postId}/Comments/{action=Index}/{id?}",
-            //    defaults: new { controller = "Comments" }
-            //    );
-
             app.Run();
         }
     }
