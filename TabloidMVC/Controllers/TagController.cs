@@ -57,6 +57,7 @@ namespace TabloidMVC.Controllers
         public ActionResult Edit(int id)
         {
             Tag tag = _tagRepository.GetTagById(id);
+
             return View();
         }
 
@@ -79,21 +80,25 @@ namespace TabloidMVC.Controllers
         // GET: TagController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Tag tag = _tagRepository.GetTagById(id);
+
+            return View(tag);
         }
 
         // POST: TagController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Tag tag)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _tagRepository.Delete(id);
+
+                return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return View(tag);
             }
         }
     }

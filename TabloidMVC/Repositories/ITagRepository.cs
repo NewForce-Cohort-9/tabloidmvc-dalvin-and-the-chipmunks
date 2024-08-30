@@ -8,6 +8,7 @@ namespace TabloidMVC.Repositories
         List<Tag> GetAllTags();
         void Add(Tag tag);
         void Update(Tag tag);
+        void Delete(int id);
         Tag GetTagById(int id);
 
     }
