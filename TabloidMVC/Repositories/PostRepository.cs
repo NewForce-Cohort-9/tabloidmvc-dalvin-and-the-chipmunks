@@ -197,7 +197,7 @@ namespace TabloidMVC.Repositories
                 }
             };
         }
-        public void Edit(Post post)
+        public void UpdatePost(Post post)
         {
             using (SqlConnection conn = Connection)
             {
@@ -210,9 +210,9 @@ namespace TabloidMVC.Repositories
                             SET 
                                 [Title] = @title, 
                                 Content = @content, 
-                                ImageLocation = @imageLocation, 
+                                ImageLocation = @imageLocation 
                             WHERE Id = @id";
-
+                    cmd.Parameters.AddWithValue("@id", post.Id);
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@content", post.Content);
                     cmd.Parameters.AddWithValue("@imageLocation", post.ImageLocation);
@@ -222,27 +222,28 @@ namespace TabloidMVC.Repositories
             }
         }
 
-        //    public void DeletePost(int postId)
-        //    {
-        //        using (SqlConnection conn = Connection)
-        //        {
-        //            conn.Open();
 
-        //            using (SqlCommand cmd = conn.CreateCommand())
-        //            {
-        //                cmd.CommandText = @"
-        //                        DELETE FROM Post
-        //                        WHERE Id = @id
-        //                    ";
+        public void Delete(int postId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
 
-        //                cmd.Parameters.AddWithValue("@id", postId);
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                DELETE FROM Post
+                                WHERE Id = @id
+                            ";
 
-        //                cmd.ExecuteNonQuery();
-        //            }
-        //        }
-        //    }
-        //}
+                    cmd.Parameters.AddWithValue("@id", postId);
 
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
+
 }
+
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
 using System.Security.Claims;
+using TabloidMVC.Models;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
@@ -43,18 +44,17 @@ public class PostController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult Edit(int id, Post post)
     {
-        try
-        {
-            // update the dogs OwnerId to the current user's Id
-            post.PostId = GetCurrentUserProfileId();
+        //try
+        //{
+            post.UserProfileId = GetCurrentUserProfileId();
             _postRepository.UpdatePost(post);
 
             return RedirectToAction("Index");
-        }
-        catch (Exception ex)
-        {
-            return View(post);
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    return View(post);
+        //}
     }
 
 
