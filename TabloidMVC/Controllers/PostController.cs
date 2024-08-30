@@ -48,6 +48,11 @@ namespace TabloidMVC.Controllers
             return View(vm);
         }
 
+        //public IActionResult Comments(int id)
+        //{
+        //    return View();
+        //}
+
         [HttpPost]
         public IActionResult Create(PostCreateViewModel vm)
         {
