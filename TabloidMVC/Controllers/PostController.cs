@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
 using System.Security.Claims;
+using TabloidMVC.Models;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
@@ -13,11 +14,13 @@ namespace TabloidMVC.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly ITagRepository _tagRepository;
 
-        public PostController(IPostRepository postRepository, ICategoryRepository categoryRepository)
+        public PostController(IPostRepository postRepository, ICategoryRepository categoryRepository, ITagRepository tagRepository)
         {
             _postRepository = postRepository;
             _categoryRepository = categoryRepository;
+            _tagRepository = tagRepository;
         }
 
         public IActionResult Index()
@@ -28,11 +31,23 @@ namespace TabloidMVC.Controllers
 
         public IActionResult Details(int id)
         {
+            List<Tag> tags = _tagRepository.GetAllTags();
+            List<Tag> tagsByPost = _tagRepository.GetTagsByPostId(id);
+
             var post = _postRepository.GetPublishedPostById(id);
+
+
             if (post == null)
             {
                 int userId = GetCurrentUserProfileId();
-                post = _postRepository.GetUserPostById(id, userId);
+                post = _postRepository.GetUserPostById(id, userId);            
+                
+                PostDetailsViewModel vm = new PostDetailsViewModel()
+                {
+                    Post = post,
+                    Tags = tags
+                };
+
                 if (post == null)
                 {
                     return NotFound();
