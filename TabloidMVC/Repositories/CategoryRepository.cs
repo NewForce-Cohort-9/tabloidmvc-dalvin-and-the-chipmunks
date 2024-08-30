@@ -81,13 +81,12 @@ namespace TabloidMVC.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                    INSERT INTO CATEGORY ([Name], Id)
+                    INSERT INTO CATEGORY ( Name )
                     OUTPUT INSERTED.ID
-                    VALUES (@name, @id);
+                    VALUES (@name);
                 ";
 
                     cmd.Parameters.AddWithValue("@name", category.Name);
-                    cmd.Parameters.AddWithValue("@Id", category.Id);
 
                     category.Id = (int)cmd.ExecuteScalar();
                 }

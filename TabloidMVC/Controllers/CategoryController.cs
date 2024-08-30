@@ -38,9 +38,7 @@ namespace TabloidMVC.Controllers
         // GET: CategoryController/Create
         public ActionResult Create()
         {
-            var vm = new PostCreateViewModel();
-            vm.CategoryOptions = _categoryRepository.GetAll();
-            return View(vm);
+            return View();
         }
 
         // POST: CategoryController/Create
