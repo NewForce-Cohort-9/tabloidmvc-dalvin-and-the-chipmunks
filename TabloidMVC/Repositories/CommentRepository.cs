@@ -26,8 +26,9 @@ namespace TabloidMVC.Repositories
                               u.DisplayName 
                          FROM Comment c
                               LEFT JOIN UserProfile u ON c.UserProfileId = u.id
+                        WHERE c.PostId = @PostId                        
                         ORDER BY c.CreateDateTime DESC
-                        WHERE c.PostId = @PostId";
+                                                ";
 
                     cmd.Parameters.AddWithValue("@PostId", PostId);
 
