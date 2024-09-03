@@ -44,6 +44,54 @@ namespace TabloidMVC.Controllers
             return View(post);
         }
 
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var posts = _postRepository.GetPublishedPostById(id);
+            return View(posts); // Pass the posts to the view to be displayed
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, Post post)
+        {
+            //try
+            //{
+            post.UserProfileId = GetCurrentUserProfileId();
+            _postRepository.UpdatePost(post);
+
+            return RedirectToAction("Index");
+            //}
+            //catch (Exception ex)
+            //{
+            //    return View(post);
+            //}
+        }
+
+        // GET: PostController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            Post post = _postRepository.GetPublishedPostById(id);
+
+            return View(post);
+        }
+
+        // POST: PostController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, Post post)
+        {
+            try
+            {
+                _postRepository.Delete(id);
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View(post);
+            }
+        }
         public IActionResult Create()
         {
             var vm = new PostCreateViewModel();
@@ -69,29 +117,6 @@ namespace TabloidMVC.Controllers
                 vm.CategoryOptions = _categoryRepository.GetAll();
                 return View(vm);
             }
-        }
-
-        public IActionResult Edit(int id)
-        {
-            var posts = _postRepository.GetPublishedPostById(id);
-            return View(posts); // Pass the posts to the view to be displayed
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Post post)
-        {
-            //try
-            //{
-            post.UserProfileId = GetCurrentUserProfileId();
-            _postRepository.UpdatePost(post);
-
-            return RedirectToAction("Index");
-            //}
-            //catch (Exception ex)
-            //{
-            //    return View(post);
-            //}
         }
 
         private int GetCurrentUserProfileId()
