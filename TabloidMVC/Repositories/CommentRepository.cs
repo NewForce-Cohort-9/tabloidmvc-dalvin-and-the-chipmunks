@@ -69,8 +69,6 @@ namespace TabloidMVC.Repositories
             }
         }
 
-
-        
         private Comment NewCommentFromReader(SqlDataReader reader)
         {
             return new Comment()

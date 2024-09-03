@@ -53,20 +53,22 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: CommentsController/Create
-        public ActionResult Create(int id)
+        public ActionResult Create(PostCommentsAddViewModel vm)
         {
-            int userId = GetCurrentUserProfileId();
-            Post post = _postRepository.GetPublishedPostById(id);
-            Comment comment = new Comment();
+            try
+            {
+                vm.UserId = GetCurrentUserProfileId();
+                vm.Comment.CreateDateTime = DateAndTime.Now;
 
-            PostCommentsAddViewModel vm = new PostCommentsAddViewModel();
-            vm.Post = post;
-            vm.UserId = userId;
-            vm.Comment = comment;
-            vm.Comment.PostId = vm.Post.Id;
-            vm.Comment.UserProfileId = userId;
+                _commentRepository.Add(vm.Comment);
 
-            return View(vm);
+                return RedirectToAction("Details", new { id = vm.Comment.Id });
+            }
+            catch
+            {
+                return View(vm);
+            }
+
         }
 
         // POST: CommentsController/Create
