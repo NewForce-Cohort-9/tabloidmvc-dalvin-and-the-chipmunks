@@ -53,8 +53,6 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: CommentsController/Create
-
-
         public ActionResult Create()
         {
          PostCommentsAddViewModel vm = new PostCommentsAddViewModel();
