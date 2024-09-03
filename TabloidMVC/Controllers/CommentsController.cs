@@ -53,6 +53,18 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: CommentsController/Create
+
+
+        public ActionResult Create()
+        {
+         PostCommentsAddViewModel vm = new PostCommentsAddViewModel();
+        return View(vm);
+
+        }
+
+        // POST: CommentsController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(PostCommentsAddViewModel vm)
         {
             try
@@ -69,21 +81,6 @@ namespace TabloidMVC.Controllers
                 return View(vm);
             }
 
-        }
-
-        // POST: CommentsController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         // GET: CommentsController/Edit/5
