@@ -73,5 +73,24 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+        public void AddCategory(Category category)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    INSERT INTO CATEGORY ( Name )
+                    OUTPUT INSERTED.ID
+                    VALUES (@name);
+                ";
+
+                    cmd.Parameters.AddWithValue("@name", category.Name);
+
+                    category.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
     }
 }
