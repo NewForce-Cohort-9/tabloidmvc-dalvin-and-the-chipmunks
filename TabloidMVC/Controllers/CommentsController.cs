@@ -56,6 +56,9 @@ namespace TabloidMVC.Controllers
         public ActionResult Create()
         {
          PostCommentsAddViewModel vm = new PostCommentsAddViewModel();
+            vm.Post = null;
+            vm.Comment = null; 
+            vm.UserId = GetCurrentUserProfileId();
         return View(vm);
 
         }
