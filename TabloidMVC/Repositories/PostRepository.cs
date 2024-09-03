@@ -245,5 +245,3 @@ namespace TabloidMVC.Repositories
     }
 
 }
-
-
