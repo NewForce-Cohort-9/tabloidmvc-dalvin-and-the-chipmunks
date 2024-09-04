@@ -56,10 +56,11 @@ namespace TabloidMVC.Controllers
         public ActionResult Create(int id)
         {
          PostCommentsAddViewModel vm = new PostCommentsAddViewModel();
-            vm.Post = null;
+            vm.Post = _postRepository.GetPublishedPostById(id);
             vm.Comment = null; 
             vm.UserId = GetCurrentUserProfileId();
-        return View(vm);
+
+            return View(vm);
 
         }
 
@@ -73,6 +74,8 @@ namespace TabloidMVC.Controllers
                 vm.Comment.UserProfileId = GetCurrentUserProfileId();
                 vm.Comment.CreateDateTime = DateAndTime.Now;
                 vm.Comment.PostId = id;
+                vm.Post = _postRepository.GetPublishedPostById(id);
+
 
                 _commentRepository.Add(vm.Comment);
 
