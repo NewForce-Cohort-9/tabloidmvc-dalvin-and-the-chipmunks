@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection.PortableExecutable;
+using Azure;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using TabloidMVC.Models;
@@ -79,6 +80,48 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+        public List<Tag> GetTagsByPostId(int postId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT t.Id, t.Name, p.Id AS 'PostId'
+                        FROM Tag t
+                        LEFT JOIN PostTag pt
+                        ON t.Id = pt.TagId
+                        LEFT JOIN Post p
+                        ON pt.PostId = p.Id
+                        WHERE p.Id = @postId
+                        ";
+
+                    cmd.Parameters.AddWithValue("@postId", postId);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List <Tag> tags = new List<Tag>();
+
+                    while (reader.Read())
+                    {
+                        Tag tag = new Tag()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name"))
+                        };
+
+                        tags.Add(tag);
+                    }
+
+                    reader.Close();
+
+                    return tags;
+                }
+            }
+        }
+
         public void Add(Tag tag)
         {
             using (var conn = Connection)
