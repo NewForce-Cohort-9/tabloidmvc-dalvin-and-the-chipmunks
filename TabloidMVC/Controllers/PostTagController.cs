@@ -1,15 +1,22 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TabloidMVC.Models;
+using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
 {
     public class PostTagController : Controller
     {
+        private readonly IPostTagRepository _postTagRepository;
+        public PostTagController(IPostTagRepository postTagRepository)
+        {
+            _postTagRepository = postTagRepository;
+        }
         // GET: PostTagController
         public ActionResult Index()
         {
-            return View();
+            var postTags = _postTagRepository.GetAll();
+            return View(postTags);
         }
 
         // GET: PostTagController/Details/5
@@ -21,37 +28,22 @@ namespace TabloidMVC.Controllers
         // GET: PostTagController/Create
         public ActionResult Create()
         {
-            try
-            {
-                _postTagRepository.Add(PostTag postTag)
-            }
-        }
-
-        public ActionResult Create(Tag tag)
-        {
-            try
-            {
-                _tagRepository.Add(tag);
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                return View(tag);
-            }
+            return View();
         }
 
         // POST: PostTagController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(PostTag postTag)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _postTagRepository.Add(postTag);
+                return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(postTag);
             }
         }
 
