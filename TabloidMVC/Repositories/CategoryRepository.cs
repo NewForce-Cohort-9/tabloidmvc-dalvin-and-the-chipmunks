@@ -112,7 +112,7 @@ namespace TabloidMVC.Repositories
                     cmd.ExecuteNonQuery();
                 }
             }
-        }
+        
 
         public void Update(Category category)
         {

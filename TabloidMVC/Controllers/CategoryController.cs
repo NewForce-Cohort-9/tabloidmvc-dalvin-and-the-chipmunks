@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TabloidMVC.Models;
+using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
@@ -48,11 +50,12 @@ namespace TabloidMVC.Controllers
             {
                 _categoryRepository.Add(category);
 
+
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(category);
             }
         }
 
