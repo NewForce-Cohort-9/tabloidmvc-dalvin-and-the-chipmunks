@@ -112,26 +112,27 @@ namespace TabloidMVC.Repositories
                     cmd.ExecuteNonQuery();
                 }
             }
-        
+        }
 
-        public void Update(Category category)
-        {
-            using (var conn = Connection)
+
+            public void Update(Category category)
             {
-                conn.Open();
-                using (var cmd = conn.CreateCommand())
+                using (var conn = Connection)
                 {
-                    cmd.CommandText = @"
+                    conn.Open();
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"
                         UPDATE Category
                         SET Name = @name
                         WHERE Id = @id
                         ";
-                    cmd.Parameters.AddWithValue("@id", category.Id);
-                    cmd.Parameters.AddWithValue("@name", category.Name);
+                        cmd.Parameters.AddWithValue("@id", category.Id);
+                        cmd.Parameters.AddWithValue("@name", category.Name);
 
-                    cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }
     }
-}
