@@ -53,24 +53,39 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: CommentsController/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            return View();
+         PostCommentsAddViewModel vm = new PostCommentsAddViewModel();
+            vm.Post = _postRepository.GetPublishedPostById(id);
+            vm.Comment = null; 
+            vm.UserId = GetCurrentUserProfileId();
+
+            return View(vm);
+
         }
 
         // POST: CommentsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(int id, PostCommentsAddViewModel vm)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                vm.Comment.UserProfileId = GetCurrentUserProfileId();
+                vm.Comment.CreateDateTime = DateAndTime.Now;
+                vm.Comment.PostId = id;
+                vm.Post = _postRepository.GetPublishedPostById(id);
+
+
+                _commentRepository.Add(vm.Comment);
+
+                return RedirectToAction("Details", new { id = vm.Comment.PostId });
             }
             catch
             {
-                return View();
+                return View(vm);
             }
+
         }
 
         // GET: CommentsController/Edit/5
