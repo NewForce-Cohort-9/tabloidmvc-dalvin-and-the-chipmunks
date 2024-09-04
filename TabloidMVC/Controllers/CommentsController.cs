@@ -53,7 +53,7 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: CommentsController/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
          PostCommentsAddViewModel vm = new PostCommentsAddViewModel();
             vm.Post = null;
@@ -66,16 +66,17 @@ namespace TabloidMVC.Controllers
         // POST: CommentsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(PostCommentsAddViewModel vm)
+        public ActionResult Create(int id, PostCommentsAddViewModel vm)
         {
             try
             {
-                vm.UserId = GetCurrentUserProfileId();
+                vm.Comment.UserProfileId = GetCurrentUserProfileId();
                 vm.Comment.CreateDateTime = DateAndTime.Now;
+                vm.Comment.PostId = id;
 
                 _commentRepository.Add(vm.Comment);
 
-                return RedirectToAction("Details", new { id = vm.Comment.Id });
+                return RedirectToAction("Details", new { id = vm.Comment.PostId });
             }
             catch
             {
